@@ -1,0 +1,26 @@
+version: "3.0"
+services:
+  grpc_stub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    image: vitvitale/grpc_py_stub:1.0.1
+    container_name: grpc_stub
+    restart: 'no'
+    ports:
+      - '50051:50051'
+      - '8022:8022'
+    networks:
+      - ST_network
+    volumes:
+      - ./proto/:/proto/
+    environment:
+      TZ: Europe/Moscow
+      PROTO_FILE: example_service.proto
+      NUM_WORKERS: 1
+      GRPC_PORT: 50051
+      REST_PORT: 8022
+
+networks:
+  ST_network:
+    external: true

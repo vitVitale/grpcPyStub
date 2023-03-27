@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package com.example.demo;
+
+import "example_common.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.demo";
+
+enum Status {
+  OK = 0;
+  NOT_FOUND = 1;
+  INTERNAL = 2;
+}
+
+enum ServiceType {
+  MUSIC = 0;
+  VIDEO = 1;
+  FOOD_DELIVERY = 2;
+  CAR_SHARING = 3;
+}
+
+message UserByIdRequest {
+  int64 id = 1;
+}
+
+message UserByIdResponse {
+  Status status = 1;
+  oneof kind {
+    UserData user = 2;
+    Error error = 3;
+  }
+}
+
+message UsersBySubsTypeRequest {
+  ServiceType serviceType = 1;
+  NullableBool isPremium = 2;
+}
+
+message UsersBySubsTypeResponse {
+  repeated UserData users = 1;
+}
+
+message UserData {
+  string name = 1;
+  string surname = 2;
+  string email = 3;
+  optional string phone = 4;
+  repeated SubscriptionData subscriptionData = 5;
+}
+
+message SubscriptionData {
+  NullableBool isPremium = 1;
+  NullableInt64 expiresAt = 2;
+  ServiceType serviceType = 3;
+  optional google.protobuf.Timestamp agreementDate = 4;
+}
+
+message Error {
+  string code = 1;
+  string description = 2;
+  repeated ErrorInfo errorInfo = 3;
+}
+
+message ErrorInfo {
+  string reason = 1;
+  string domain = 2;
+}

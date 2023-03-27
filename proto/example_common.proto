@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.example.demo;
+
+import "google/protobuf/struct.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.demo";
+
+message NullableBool {
+  oneof kind {
+    google.protobuf.NullValue null = 1;
+    bool data = 2;
+  }
+}
+
+message NullableInt64 {
+  oneof kind {
+    google.protobuf.NullValue null = 1;
+    int64 data = 2;
+  }
+}
